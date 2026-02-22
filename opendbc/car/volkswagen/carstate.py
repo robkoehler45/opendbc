@@ -276,7 +276,10 @@ class CarState(CarStateBase, MadsCarState):
     ret.yawRate = -pt_cp.vl["ESC_50"]["Yaw_Rate"] * (1, -1)[int(pt_cp.vl["ESC_50"]["Yaw_Rate_Sign"])] * CV.DEG_TO_RAD
     
     # Update gear and/or clutch position data.
-    if self.CP.flags & VolkswagenFlags.ALT_GEAR:
+    if self.CP.transmissionType == TransmissionType.manual:
+      reverse_light = bool(pt_cp.vl["Gateway_72"]["BCM1_Rueckfahrlicht_Schalter"])
+      ret.gearShifter = GearShifter.reverse if reverse_light else GearShifter.drive
+    elif self.CP.flags & VolkswagenFlags.ALT_GEAR:
       ret.gearShifter = self.parse_gear_shifter(self.CCP.shifter_values.get(pt_cp.vl["Gateway_73"]["GE_Fahrstufe"], None)) # (candidate for all plattforms MEB and MQB evo)
     else:
       ret.gearShifter = self.parse_gear_shifter(self.CCP.shifter_values.get(pt_cp.vl["Getriebe_11"]["GE_Fahrstufe"], None))

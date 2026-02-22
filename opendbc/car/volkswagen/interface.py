@@ -42,17 +42,21 @@ class CarInterface(CarInterfaceBase):
       ret.dashcamOnly = is_release  # Release support needs HCA timeout fix, safety validation
 
     elif ret.flags & (VolkswagenFlags.MEB | VolkswagenFlags.MQB_EVO):
-      # Set global MEB parameters
+      # Set global MEB/MQB EVO parameters
       if ret.flags & VolkswagenFlags.MEB:
         safety_configs = [get_safety_config(structs.CarParams.SafetyModel.volkswagenMeb)]
+        ret.transmissionType = TransmissionType.direct
       elif ret.flags & VolkswagenFlags.MQB_EVO:
         safety_configs = [get_safety_config(structs.CarParams.SafetyModel.volkswagenMqbEvo)]
+        if 0xAD in fingerprint[0] or docs:  # Getriebe_11
+          ret.transmissionType = TransmissionType.automatic
+        else:
+          ret.transmissionType = TransmissionType.manual
         
       if ret.flags & VolkswagenFlags.MEB_GEN2:
         safety_configs[0].safetyParam |= VolkswagenSafetyFlags.ALT_CRC_VARIANT_1.value
       
       ret.enableBsm = 0x24C in fingerprint[0]  # MEB_Side_Assist_01
-      ret.transmissionType = TransmissionType.direct
       #ret.steerControlType = structs.CarParams.SteerControlType.angle
       ret.steerControlType = structs.CarParams.SteerControlType.curvatureDEPRECATED
       ret.steerAtStandstill = True

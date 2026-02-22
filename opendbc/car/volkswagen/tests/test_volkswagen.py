@@ -1,7 +1,9 @@
 import random
 import re
 
+from opendbc.car import gen_empty_fingerprint
 from opendbc.car.structs import CarParams
+from opendbc.car.volkswagen.interface import CarInterface
 from opendbc.car.volkswagen.values import CAR, FW_QUERY_CONFIG, WMI
 from opendbc.car.volkswagen.fingerprints import FW_VERSIONS
 
@@ -58,3 +60,14 @@ class TestVolkswagenPlatformConfigs:
 
               expected_matches = {platform} if should_match else set()
               assert expected_matches == matches, "Bad match"
+
+  def test_mqb_evo_transmission_detection_manual(self):
+    fp = gen_empty_fingerprint()
+    CP = CarInterface.get_params(CAR.VOLKSWAGEN_GOLF_MK8, fp, [], False, False, False)
+    assert CP.transmissionType == CarParams.TransmissionType.manual
+
+  def test_mqb_evo_transmission_detection_automatic(self):
+    fp = gen_empty_fingerprint()
+    fp[0][0xAD] = 8  # Getriebe_11
+    CP = CarInterface.get_params(CAR.VOLKSWAGEN_GOLF_MK8, fp, [], False, False, False)
+    assert CP.transmissionType == CarParams.TransmissionType.automatic

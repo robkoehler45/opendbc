@@ -39,10 +39,6 @@ class CanBus(CanBusBase):
     # NetworkLocation.fwdCamera: radar-camera object fusion CAN
     # NetworkLocation.gateway: powertrain CAN
     return self.offset + 1
-    
-  @property
-  def main(self) -> int:
-    return self.offset + 1
 
   @property
   def cam(self) -> int:
@@ -114,6 +110,7 @@ class CarControllerParams:
       self.LDW_STEP                = 10    # LDW_02 message frequency 10Hz
       self.ACC_HUD_STEP            = 6     # MEB_ACC_01 message frequency 16Hz
       self.STEER_DRIVER_ALLOWANCE  = 60    # Driver torque 0.6 Nm, begin steering reduction from MAX
+      self.STEER_DRIVER_SLIGHT_PRESS = 15  # Driver torque 0.15 Nm for slight steering override detection
       self.STEER_DRIVER_MAX        = 300   # Driver torque 3.0 Nm, stop steering reduction at MIN
       self.STEERING_POWER_MAX      = 50    # HCA_03 maximum steering power, percentage
       self.STEERING_POWER_MIN      = 4     # HCA_03 minimum steering power, percentage
@@ -240,6 +237,7 @@ class WMI(StrEnum):
   VOLKSWAGEN_EUROPE_SUV = "WVG"
   VOLKSWAGEN_EUROPE_CAR = "WVW"
   VOLKSWAGEN_GROUP_RUS = "XW8"
+  FORD_EUROPE_CAR = "WF0"
 
 
 class VolkswagenSafetyFlags(IntFlag):
@@ -327,6 +325,10 @@ class VolkswagenCarSpecs(CarSpecs):
 
 
 class Footnote(Enum):
+  SETUP = CarFootnote(
+    "The J533 harness plugs in at the CAN gateway under the dashboard, just above the steering column. " +
+    "More information can be found at <a href=\"https://docs.howtocomma.com/docs/j533-harness-install\" target=\"_blank\">this guide</a>.",
+    Column.MAKE, setup_note=True)
   KAMIQ = CarFootnote(
     "Not including the China market Kamiq, which is based on the (currently) unsupported PQ34 platform.",
     Column.MODEL)
@@ -345,17 +347,24 @@ class Footnote(Enum):
     "Model-years 2022 and beyond may have a combined CAN gateway and BCM, which is supported by openpilot " +
     "in software, but doesn't yet have a harness available from the comma store.",
     Column.HARDWARE)
+  FORD_MEB = CarFootnote(
+    "Some Ford models are based on Volkswagen MEB plattform.",
+    Column.MODEL)
 
 
 @dataclass
 class VWCarDocs(CarDocs):
   package: str = "Adaptive Cruise Control (ACC) & Lane Assist"
   car_parts: CarParts = field(default_factory=CarParts.common([CarHarness.vw_j533]))
+  footnotes: list[Enum] = field(default_factory=lambda: [Footnote.SETUP])
 
   def init_make(self, CP: structs.CarParams):
     self.footnotes.append(Footnote.VW_EXP_LONG)
     if "SKODA" in CP.carFingerprint:
       self.footnotes.append(Footnote.SKODA_HEATED_WINDSHIELD)
+      
+    if "FORD" in CP.carFingerprint:
+      self.footnotes.append(Footnote.FORD_MEB)
 
     if abs(CP.minSteerSpeed - CarControllerParams.DEFAULT_MIN_STEER_SPEED) < 1e-3:
       self.min_steer_speed = 0
@@ -368,6 +377,13 @@ class VWCarDocs(CarDocs):
 class CAR(Platforms):
   config: VolkswagenMQBPlatformConfig | VolkswagenPQPlatformConfig
 
+  FORD_EXPLORER_EV_MK1 = VolkswagenMEBPlatformConfig(
+    [VWCarDocs("Ford Explorer EV Limited 2024-25")],
+    VolkswagenCarSpecs(mass=2090, wheelbase=2.77, steerRatio=21.7),
+    chassis_codes={"EF"},
+    wmis={WMI.FORD_EUROPE_CAR},
+    flags=VolkswagenFlags.MEB_GEN2,
+  )
   VOLKSWAGEN_ARTEON_MK1 = VolkswagenMQBPlatformConfig(
     [
       VWCarDocs("Volkswagen Arteon 2018-23", video="https://youtu.be/FAomFKPFlDA"),
@@ -596,6 +612,12 @@ class CAR(Platforms):
     wmis={WMI.AUDI_EUROPE_MPV},
     model_years={"R","S"},
     flags=VolkswagenFlags.MEB_GEN2,
+  )
+  AUDI_Q5_MK1 = VolkswagenMLBPlatformConfig(
+    [VWCarDocs("Audi Q5 2013-17")],
+    VolkswagenCarSpecs(mass=1895, wheelbase=2.81),
+    chassis_codes={"8R"},
+    wmis={WMI.AUDI_EUROPE_MPV, WMI.AUDI_GERMANY_CAR},
   )
   PORSCHE_MACAN_MK1 = VolkswagenMLBPlatformConfig(
     [VWCarDocs("Porsche Macan 2017-24")],

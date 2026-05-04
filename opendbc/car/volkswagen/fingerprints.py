@@ -8,6 +8,26 @@ Ecu = CarParams.Ecu
 
 
 FW_VERSIONS = {
+  CAR.FORD_EXPLORER_EV_MK1: {
+    (Ecu.inverter, 0x17fc007c, None): [
+      b'\xf1\x871EA907121BJ\xf1\x896125\xf1\x82010\x00',
+    ],
+    (Ecu.engine, 0x17fc0076, None): [
+      b'\xf1\x870EA906013F \xf1\x894095',
+    ],
+    (Ecu.transmission, 0x7e1, None): [],
+    (Ecu.srs, 0x715, None): [],
+    (Ecu.eps, 0x712, None): [],
+    (Ecu.fwdCamera, 0x74f, None): [
+      b'\xf1\x871EA980654M \xf1\x895556',
+    ],
+    (Ecu.cornerRadar, 0x74e, None): [],
+    (Ecu.adas, 0x769, None): [],
+    (Ecu.parkingAdas, 0x70a, None): [],
+    (Ecu.fwdRadar, 0x757, None): [
+      b'\xf1\x871EA907567B \xf1\x890232',
+    ],
+  },
   CAR.VOLKSWAGEN_ARTEON_MK1: {
     (Ecu.engine, 0x7e0, None): [
       b'\xf1\x8704L906026TM\xf1\x896847',
@@ -1124,6 +1144,26 @@ FW_VERSIONS = {
     (Ecu.parkingAdas, 0x70a, None): [],
     (Ecu.fwdRadar, 0x757, None): [
       b'\xf1\x871EA907567B \xf1\x890232',
+    ],
+  },
+  CAR.AUDI_Q5_MK1: {
+    (Ecu.engine, 0x7e0, None): [
+      b'\xf1\x878R0907115N \xf1\x890006',
+      b'\xf1\x878R0907551F \xf1\x890007',
+    ],
+    (Ecu.transmission, 0x7e1, None): [
+      b'\xf1\x878R0927158D \xf1\x891010',
+      b'\xf1\x878R0927158AM\xf1\x891003',
+    ],
+    (Ecu.srs, 0x715, None): [
+      b'\xf1\x878R0959655F \xf1\x890610\xf1\x82\x050304010402',
+    ],
+    (Ecu.eps, 0x712, None): [
+      b'\xf1\x878R0909144R \xf1\x890511\xf1\x82\x01\n\x1a',
+      b'\xf1\x878R0909144F \xf1\x890507\xf1\x82\x01\t\xe6',
+    ],
+    (Ecu.fwdRadar, 0x757, None): [
+      b'\xf1\x878R0907561A\x00\xf1\x890410\xf1\x80100',
     ],
   },
   CAR.PORSCHE_MACAN_MK1: {

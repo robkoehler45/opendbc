@@ -21,6 +21,18 @@
     ],
     "package": "All"
   },
+  "Acura MDX 2022-24": {
+    "platform": "ACURA_MDX_4G",
+    "make": "Acura",
+    "brand": "honda",
+    "model": "MDX",
+    "year": [
+      "2022",
+      "2023",
+      "2024"
+    ],
+    "package": "All"
+  },
   "Acura MDX 2025-26": {
     "platform": "ACURA_MDX_4G_MMR",
     "make": "Acura",
@@ -56,13 +68,14 @@
     ],
     "package": "All"
   },
-  "Acura TLX 2021": {
+  "Acura TLX 2021-22": {
     "platform": "ACURA_TLX_2G",
     "make": "Acura",
     "brand": "honda",
     "model": "TLX",
     "year": [
-      "2021"
+      "2021",
+      "2022"
     ],
     "package": "All"
   },
@@ -616,6 +629,17 @@
       "2024"
     ],
     "package": "Co-Pilot360 Assist+"
+  },
+  "Ford Explorer EV 2024-25": {
+    "platform": "FORD_EXPLORER_EV_MK1",
+    "make": "Ford",
+    "brand": "volkswagen",
+    "model": "Explorer EV",
+    "year": [
+      "2024",
+      "2025"
+    ],
+    "package": "Adaptive Cruise Control (ACC) & Lane Assist"
   },
   "Ford Explorer Hybrid 2020-24": {
     "platform": "FORD_EXPLORER_MK6",
@@ -1344,6 +1368,16 @@
       "2026"
     ],
     "package": "All"
+  },
+  "Honda Odyssey (Singapore) 2021": {
+    "platform": "HONDA_ODYSSEY_TWN",
+    "make": "Honda",
+    "brand": "honda",
+    "model": "Odyssey (Singapore)",
+    "year": [
+      "2021"
+    ],
+    "package": "Honda Sensing"
   },
   "Honda Odyssey (Taiwan) 2018-19": {
     "platform": "HONDA_ODYSSEY_TWN",
@@ -2179,12 +2213,13 @@
     ],
     "package": "All"
   },
-  "Kia Niro EV (with HDA II) 2025": {
+  "Kia Niro EV (with HDA II) 2024-25": {
     "platform": "KIA_NIRO_EV_2ND_GEN",
     "make": "Kia",
     "brand": "hyundai",
     "model": "Niro EV (with HDA II)",
     "year": [
+      "2024",
       "2025"
     ],
     "package": "Highway Driving Assist II"
@@ -2231,13 +2266,14 @@
     ],
     "package": "Smart Cruise Control (SCC)"
   },
-  "Kia Niro Hybrid 2023": {
+  "Kia Niro Hybrid 2023-24": {
     "platform": "KIA_NIRO_HEV_2ND_GEN",
     "make": "Kia",
     "brand": "hyundai",
     "model": "Niro Hybrid",
     "year": [
-      "2023"
+      "2023",
+      "2024"
     ],
     "package": "Smart Cruise Control (SCC)"
   },
@@ -2879,7 +2915,7 @@
     "package": "Adaptive Cruise Control (ACC)"
   },
   "Rivian R1S 2022-24": {
-    "platform": "RIVIAN_R1_GEN1",
+    "platform": "RIVIAN_R1",
     "make": "Rivian",
     "brand": "rivian",
     "model": "R1S",
@@ -2890,8 +2926,18 @@
     ],
     "package": "All"
   },
+  "Rivian R1S 2025": {
+    "platform": "RIVIAN_R1",
+    "make": "Rivian",
+    "brand": "rivian",
+    "model": "R1S",
+    "year": [
+      "2025"
+    ],
+    "package": "All"
+  },
   "Rivian R1T 2022-24": {
-    "platform": "RIVIAN_R1_GEN1",
+    "platform": "RIVIAN_R1",
     "make": "Rivian",
     "brand": "rivian",
     "model": "R1T",
@@ -2899,6 +2945,16 @@
       "2022",
       "2023",
       "2024"
+    ],
+    "package": "All"
+  },
+  "Rivian R1T 2025": {
+    "platform": "RIVIAN_R1",
+    "make": "Rivian",
+    "brand": "rivian",
+    "model": "R1T",
+    "year": [
+      "2025"
     ],
     "package": "All"
   },

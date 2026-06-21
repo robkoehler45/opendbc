@@ -83,8 +83,8 @@ def create_blinker_control(packer, bus, ea_hud_stock_values, ea_control_stock_va
   return packer.make_can_msg("EA_02", bus, values)
 
 
-def create_lka_hud_control(packer, bus, ldw_stock_values, lat_active, steering_pressed, hud_alert, hud_control, sound_alert):
-  display_mode = 1 if lat_active else 0 # travel assist style showing yellow lanes when op is active
+def create_lka_hud_control(packer, bus, CP, ldw_stock_values, lat_active, steering_pressed, hud_alert, hud_control, sound_alert):
+  display_mode = 1 if lat_active and not (CP.flags & VolkswagenFlags.CLUSTER_NO_TA_LANES) else 0 # travel assist style showing yellow lanes when op is active
   
   values = {}
   if len(ldw_stock_values):
@@ -122,6 +122,7 @@ def create_acc_buttons_control(packer, bus, gra_stock_values, cancel=False, resu
     "GRA_Tip_Wiederaufnahme": resume or up,
     "GRA_Tip_Setzen": down,
   })
+
   return packer.make_can_msg("GRA_ACC_01", bus, values)
 
 
@@ -338,21 +339,22 @@ def create_acc_hud_control(packer, bus, acc_control, set_speed, lead_visible, di
   
 def create_aeb_control(packer, bus, CP):
   # default inactive values basically present for every plattform (MEB Gen 1/2, MQBevo Gen 1)
+  
   values = {
-    "SET_ME_63":    63, 
-    "SET_ME_30":    30,
-    "SET_ME_127":   127,
-    "SET_ME_127_2": 127,
-    "SET_ME_63_2":  63,
-    "SET_ME_15_1":  15,
-    "SET_ME_255":   255,
-    "SET_ME_1023":  1023,
-    "SET_ME_1":     1,
+    "SET_ME_126":         126,
+    "SET_ME_30":          30,
+    "Timer_SET_ME_254":   254,
+    "Speed_SET_ME_254":   254,
+    "Accel_SET_ME_1023":  1023,
+    "Timer_2_SET_ME_255": 255,
+    "Timer_3_SET_ME_126": 126,
+    "SET_ME_15":          15,
+    "SET_ME_2":           2,
   }
 
   if CP.flags & VolkswagenFlags.MQB_EVO:
     values.update({
-      "SET_ME_1_2": 1,
+      "SET_ME_1": 1,
     })
   
   return packer.make_can_msg("AWV_03", bus, values)

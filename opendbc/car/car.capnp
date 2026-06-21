@@ -176,8 +176,6 @@ struct CarState {
 
   gasPressed @4 :Bool;    # this is user pedal only
 
-  # brake pedal, 0.0-1.0
-  brake @5 :Float32;      # this is user pedal only
   brakePressed @6 :Bool;  # this is user pedal only
   regenBraking @45 :Bool; # this is user pedal only
   parkingBrake @39 :Bool;
@@ -195,6 +193,7 @@ struct CarState {
   steeringDisengage @58 :Bool;     # more force than steeringPressed, disengages for applicable brands
   steerFaultTemporary @35 :Bool;
   steerFaultPermanent @36 :Bool;
+  steerFaultWarning @65 :Bool;
 
   invalidLkasSetting @55 :Bool;    # stock LKAS is incorrectly configured (i.e. on or off)
   stockAeb @30 :Bool;
@@ -303,7 +302,8 @@ struct CarState {
 
   # deprecated
   errorsDEPRECATED @0 :List(OnroadEventDEPRECATED.EventName);
-  gasDEPRECATED @3 :Float32;        # this is user pedal only
+  gasDEPRECATED @3 :Float32;
+  brakeDEPRECATED @5 :Float32;
   brakeLightsDEPRECATED @19 :Bool;
   steeringRateLimitedDEPRECATED @29 :Bool;
   canMonoTimesDEPRECATED @12: List(UInt64);
@@ -525,6 +525,7 @@ struct CarParams {
     indiDEPRECATED @27 :LateralINDITuning;
     lqrDEPRECATED @40 :LateralLQRTuning;
     torque @67 :LateralTorqueTuning;
+    curvature @79 :LateralCurvatureTuning;
   }
 
   steerLimitAlert @28 :Bool;
@@ -576,6 +577,15 @@ struct CarParams {
     kiBP @2 :List(Float32);
     kiV @3 :List(Float32);
     kf @4 :Float32;
+  }
+
+  struct LateralCurvatureTuning {
+    kpBP @0 :List(Float32);
+    kpV @1 :List(Float32);
+    kiBP @2 :List(Float32);
+    kiV @3 :List(Float32);
+    kf @4 :Float32;
+    useCarSteerCurvature @5 :Bool;
   }
 
   struct LateralTorqueTuning {
